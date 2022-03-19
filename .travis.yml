@@ -14,8 +14,7 @@ after_success:
   - docker build -t dgil/multi-nginx ./nginx
   - docker build -t dgil/multi-server ./server
   - docker build -t dgil/multi-worker ./worker
-  - docker push dgil/multi-client
-  - echo "$DOCKER_PASS" | docker login -u "$DOCKER_ID" --password-stdin
+  - echo "$DOCKER_PASS" | docker login -u "$DOCKER_ID" --password-stdin docker.io
   - docker push dgil/multi-client:latest
   - docker push dgil/multi-nginx:latest
   - docker push dgil/multi-server:latest
