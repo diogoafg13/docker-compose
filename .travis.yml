@@ -1,0 +1,22 @@
+language: generic
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t dgil/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true dgil/react-test npm test
+
+after_success:
+  - docker build -t dgil/multi-client ./client
+  - docker build -t dgil/multi-nginx ./nginx
+  - docker build -t dgil/multi-server ./server
+  - docker build -t dgil/multi-worker ./worker
+  - docker push dgil/multi-client
+  - echo "$DOCKER_PASS" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push dgil/multi-client
+  - docker push dgil/multi-nginx
+  - docker push dgil/multi-server
+  - docker push dgil/multi-worker
